@@ -1,0 +1,27 @@
+version: '3.4'
+
+volumes:
+    go-data:
+
+services:
+    gw:
+        image: jrgensen/gateway
+        environment:
+            PROXY_MAPPINGS: >
+                basicauth:auth
+        ports:
+        - 80
+
+    auth:
+        build:
+            context: .
+            target: dev
+        volumes:
+        - .:/app
+        - go-data:/go
+        environment:
+            #GO_BUILD_FLAGS: -race
+            USERPASS: >
+                user:pass
+                test:test
+
